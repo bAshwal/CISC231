@@ -7,6 +7,8 @@ public class SortedDirectory implements SDinterface {
 	
 	protected SortedDirectory(){
 		num=0;
+		studentList = new Student[num];
+		
 		
 		
 	}
@@ -17,18 +19,26 @@ public class SortedDirectory implements SDinterface {
 		private Student(String name, int studentID){
 			this.name = name;
 			this.studentID = studentID;
-		}
+		}	
 		
 	}
 	
 
 	public void addStudent (String name, int studentID){
 		
+		if (studentExist(studentList,studentID)){
+			
+			System.out.println("Student Exists! Sorry");
+			
+		}else{
+			
+
 		num++; //Increment size of the directory by one, since we are adding
 		
 		tempStudentList = new Student[num]; // Create a temporary list to store orignal array
 		
 		if (num>1){ // copy the array only if the size of the list is greater than one
+			
 			for(int i=0; i<studentList.length;i++){// loop to copy current list to the temporary one.	
 				tempStudentList[i] = studentList[i];
 			}
@@ -41,17 +51,19 @@ public class SortedDirectory implements SDinterface {
 		for(int i=0; i<studentList.length;i++){
 			studentList[i] = tempStudentList[i];
 		}
+	
 		studentList[num]= new Student(name,studentID);// adding a new student
 		
-		num++; // Increment to reflect current size
+		num++; // Increment to reflect current size of our list
 		
+		}
 	}
 	
 	public String prettyStr(){
 		String dir = new String();
 		
 		for (int i=0;i<studentList.length;i++){
-			dir = dir + "Student name: " + studentList[i].name + "Student ID: " + studentList[i].studentID + "\n";
+			dir = dir + "Student name: " + studentList[i].name + " Student ID: " + studentList[i].studentID + "\n";
 		}
 		return dir;
 		
@@ -63,6 +75,18 @@ public class SortedDirectory implements SDinterface {
 	public String studentLookup (int studentID){
 		return null;
 		
+	}
+	
+	private boolean studentExist(Student studentList[], int num){
+		for (int i=0; i<studentList.length;i++)
+		{
+			if (studentList[i].studentID == num)
+			{
+				return true;
+			}
+			
+		}
+		return false;
 	}
 	
 	
