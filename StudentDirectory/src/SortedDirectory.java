@@ -28,7 +28,7 @@ public class SortedDirectory implements SDinterface {
 		
 		if (studentExist(studentList,studentID)){
 			
-			System.out.println("Student Exists! Sorry");
+			System.out.println("Sorry, you cannot add " + name + ",because his/her Student ID [" + studentID + "]already exist.");
 			
 		}else{
 			
@@ -39,41 +39,69 @@ public class SortedDirectory implements SDinterface {
 		
 		if (num>1){ // copy the array only if the size of the list is greater than one
 			
-			for(int i=0; i<studentList.length;i++){// loop to copy current list to the temporary one.	
-				tempStudentList[i] = studentList[i];
-			}
-		
+		copyCurListToTemp(studentList,tempStudentList);
 		}
+		
 		studentList= new Student[num];// init. an array of objects with new size
 
 		num--; // Decrement size to add a student object
 		
-		for(int i=0; i<studentList.length;i++){
-			studentList[i] = tempStudentList[i];
-		}
-	
+		copyTempListToCur(studentList,tempStudentList);
+		
 		studentList[num]= new Student(name,studentID);// adding a new student
 		
 		num++; // Increment to reflect current size of our list
-		
 		}
 	}
 	
 	public String prettyStr(){
-		String dir = new String();
+		String dir = "Student Name : Student ID: \n";
 		
 		for (int i=0;i<studentList.length;i++){
-			dir = dir + "Student name: " + studentList[i].name + " Student ID: " + studentList[i].studentID + "\n";
+			dir = dir + studentList[i].name + "          "+ studentList[i].studentID + "\n";
 		}
 		return dir;
 		
 	}
 	public void removeStudent (int studentID){
 		
+		if (studentExist(studentList,studentID)){
+			num--;
+			for (int i =0; i<studentList.length;i++){
+				if ((studentList[i].studentID == studentID) && num ==0)
+				{
+					studentList = new Student[num];
+				}else if (studentList[i].studentID == studentID)
+				{
+					Student toRemove = studentList[i];
+					studentList[i] = studentList[num];
+					studentList[num] = toRemove;
+
+				}
+			}
+			
+			if (num>0){ // copy the array only if the size of the list is greater than one	
+			copyCurListToTemp(studentList,tempStudentList);
+			}
+			studentList= new Student[num];// init. an array of objects with new size
+			
+			if (num>=0){
+			copyTempListToCur(studentList,tempStudentList);
+			}
+		}else{
+			
+			System.out.println("Sorry, you cannot remove this student, because his/her Student ID [" + studentID + "]does not exist.");
+
+		}
 	}
 	
 	public String studentLookup (int studentID){
-		return null;
+		
+		String found= new String();
+		if (studentExist(studentList,studentID)){
+			found = "Student with ID #" + studentID + " exists!";
+		}
+		return found;
 		
 	}
 	
@@ -88,7 +116,17 @@ public class SortedDirectory implements SDinterface {
 		}
 		return false;
 	}
-	
+	private void copyCurListToTemp(Student studentList[], Student tempStudentList[]){
+		for(int i=0; i<studentList.length;i++){// loop to copy current list to the temporary one.	
+			tempStudentList[i] = studentList[i];
+		}
+	}
+	private void copyTempListToCur(Student studentList[], Student tempStudentList[]){
+		for(int i=0; i<studentList.length;i++){
+			studentList[i] = tempStudentList[i];
+			}
+		
+	}
 	
 	
 }
