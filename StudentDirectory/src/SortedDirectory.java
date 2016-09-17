@@ -1,6 +1,6 @@
-/**	Bakr Albakri && Mary Scholten
+/**		Bakr Albakri && Mary Scholten	
  * 
- *  CISC231-01 		:	Assignment1
+ *  CISC231-01 		:	Assignment1		: 9/19/2016
  * 
  * SortedDirectory: a class that implements SDinterface. Its functionality includes
  * creating a dynamic directory for students, sorted by their ID#, while adding, removing,
@@ -52,10 +52,13 @@ public class SortedDirectory implements SDinterface {
 	 * back our list to current list and add a new student at the end of the list -> 
 	 * increment list size to reflect the new size of the list 
 	 * 
+	 * Then -> call the orderStudent method to order our list
+	 * 
 	 */
 	public void addStudent (String name, int studentID){
 
-		if (getStudentIndex(studentList,studentID)>=0){
+
+		if (getStudentIndex(studentID)>=0){
 
 			System.out.println("Sorry, you cannot add " + name + ",because his/her Student ID [" + studentID + "]already exist.");
 
@@ -81,7 +84,7 @@ public class SortedDirectory implements SDinterface {
 
 			listSize++; 
 		}
-		orderStudents(listSize);
+		orderStudents();
 
 	}
 
@@ -102,18 +105,21 @@ public class SortedDirectory implements SDinterface {
 	 *  	3) Initialize a new student list
 	 *  	4) copy back our list to original list array
 	 *  
-	 *  Then -> call the orderArray method to order our list
+	 *  Then -> call the orderStudent method to order our list
 	 */
 
 	public void removeStudent (int studentID){
 
-		if (getStudentIndex(studentList,studentID)>=0){
+		if (listSize ==0){
+			System.out.println("The directory is empty, you can't remove.");
+		}
+		if (getStudentIndex(studentID)>=0){
 			listSize--;
 			for (int i =0; i<studentList.length;i++){
 				if ((studentList[i].studentID == studentID) && listSize == 0)
 				{
 					studentList = new Student[listSize];
-					
+
 				}else if (studentList[i].studentID == studentID)
 				{
 					Student toRemove = studentList[i];
@@ -131,14 +137,14 @@ public class SortedDirectory implements SDinterface {
 			if (listSize>=0){
 				copyTempListToCur(studentList,cpyOfStudentList);
 			}
-		}else{
+		}else if (listSize != 0){
 
 			System.out.println("Sorry, you cannot remove this student, because his/her Student ID #[" + studentID + "] does not exist.");
 
 		}
-		orderStudents(listSize);
+		orderStudents();
 	}
-	
+
 	/**
 	 * Method3: prettyStr() -> returns String
 	 * 
@@ -157,7 +163,7 @@ public class SortedDirectory implements SDinterface {
 	}
 
 	/**
-	 * Method3: studentLookup() -> returns String
+	 * Method4: studentLookup() -> returns String
 	 * 
 	 * This method will return a string that shows, either:
 	 * 
@@ -167,17 +173,18 @@ public class SortedDirectory implements SDinterface {
 	public String studentLookup (int studentID){
 
 		String output= new String();
-		int studentIndex = getStudentIndex(studentList,studentID);
+		int studentIndex = getStudentIndex(studentID);
 		if (studentIndex<0){
 			output = "The student you are looking for is not in the directory.";
 		}else{
 			output = "The student you are looking for is " + studentList[studentIndex].name + ", with Student ID # [" + studentList[studentIndex].studentID + "] .\n";
 		}
+
 		return output;
 	}
-	
+
 	/**
-	 * Method4: getStudentIndex(Student [], int) -> returns int
+	 * Method5: getStudentIndex(Student [], int) -> returns int
 	 * 
 	 * This method is useful to check if the studentID# exists,it returns either:
 	 * 
@@ -186,7 +193,7 @@ public class SortedDirectory implements SDinterface {
 	 * 
 	 */
 
-	private int getStudentIndex(Student studentList[], int num){
+	private int getStudentIndex(int num){
 		for (int i=0; i<studentList.length;i++)
 		{
 			if (studentList[i].studentID == num)
@@ -197,9 +204,9 @@ public class SortedDirectory implements SDinterface {
 		}
 		return -1;
 	}
-	
+
 	/**
-	 * Method5: copyCurListToTemp(Student [],Student []) -> returns void
+	 * Method6: copyCurListToTemp(Student [],Student []) -> returns void
 	 * 
 	 * This method iterate through our list, and assigns current list Students to 
 	 * a temporary list(copyOfStudentList)
@@ -213,7 +220,7 @@ public class SortedDirectory implements SDinterface {
 		}
 	}
 	/**
-	 * Method6: copyTempListToCur(Student [],Student []) -> returns void
+	 * Method7: copyTempListToCur(Student [],Student []) -> returns void
 	 * 
 	 * This method iterate through our temporary list(copyOfStudentList) to retrieve our
 	 * original list after the change of adding/removing a student has been applied
@@ -225,33 +232,59 @@ public class SortedDirectory implements SDinterface {
 		}
 
 	}
-
-	private void orderStudents(int size)
+	/**
+	 * Method9: orderStudents() -> returns void
+	 * 
+	 *This method order our students array by their studentID#
+	 *
+	 *The basic idea is to compare two consecutive students ID#'s for the (listSize -1)
+	 *(Because the last student will not have a next Student to compare his ID# with)
+	 *Then, the last student compare his ID # with the student previous to him.
+	 *
+	 *So, in the loop we compare 2 consecutive student ID#'s and keep switching/moving the bigger up in the directory and
+	 *and reseting the index until we reach the last two students. Then: we check the last two to see whom has the bigger student ID # and reset the index.
+	 * 
+	 * Lastly, we need to compare the first two students ID#'s, which is greater, because if the ID'#s were ordered recursively
+	 * the second Student will miss comparing with the first student, the next student ID # will always be greater than the previous one.
+	 */
+	private void orderStudents()
 	{
-		if (size==0){ // Base Case: to stop the recursive method when we reach the end of the list
+		Student iStudent;
+		Student nextStudent;
+		
+		for (int i =0; i<studentList.length-1; i++){
+			 iStudent = studentList[i];
+			 nextStudent = studentList[i+1];
 
-		}else{
-
-			for (int i=0; i < studentList.length; i++)
+			if ((iStudent.studentID > nextStudent.studentID) && i<listSize-2){
+				studentList[i] = nextStudent;
+				studentList[i+1]= iStudent;
+				i=0;
+			}
+			if (i==(listSize-2))
 			{
+				iStudent = studentList[listSize-2];
+				nextStudent = studentList[listSize-1];
+				
+				if ((iStudent.studentID > nextStudent.studentID))
+				{
+					studentList[i] = nextStudent;
+					studentList[i+1]= iStudent;
+					i=0;
+				}
+			}
+			
+		}
+		if ( (listSize>1)&& studentList[0].studentID > studentList[1].studentID)
+		{
+			iStudent = studentList[0];
+			studentList[0] = studentList[1];
+			studentList[1]= iStudent;
+		}
+		
+	}
 
-				Student Temp1 = studentList[i];
-				Student Temp2 = studentList[size-1];
 
-				if(studentList[i].studentID < studentList[size-1].studentID){
-
-					studentList[i] = Temp2;
-					studentList[size-1] = Temp1;
-
-				} //end of if
+} // end orderStudents
 
 
-				orderStudents(size-1);
-
-			} // end of loop
-
-		} // end of else
-
-	} // end of orderStudents
-
-}// end of SortedDirectory
