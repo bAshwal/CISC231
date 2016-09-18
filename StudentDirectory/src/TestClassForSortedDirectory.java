@@ -47,6 +47,7 @@ public class TestClassForSortedDirectory {
 		d1.addStudent("Mark", 100000009);
 		d1.addStudent("Jack", 100000008);
 		d1.addStudent("Mary", 100000007);
+		d1.addStudent("Gary", 100000006);
 		System.out.print("*Added 5 students(Sorted):\n" + d1.prettyStr());
 		System.out.println("______________________________");
 
@@ -58,7 +59,7 @@ public class TestClassForSortedDirectory {
 		System.out.println("______________________________");
 
 		// Adding 2 students with ID#'s that already exist
-		System.out.println("*Test Case6: adding back Bakr and Mary with StudentID#'s that already exist {1000000006,100000008}");
+		System.out.println("*Test Case6: adding back Bakr and Mary with StudentID#'s that already exist {100000006,100000008}");
 		d1.addStudent("Bakr", 100000006);
 		d1.addStudent("Mary", 100000008);
 		System.out.print(d1.prettyStr());
@@ -76,7 +77,7 @@ public class TestClassForSortedDirectory {
 		Random randomNum = new Random();
 		int randomID[] = new int [10]; //adjust for more students
 		for (int i = 0; i<randomID.length; i++){
-			randomID[i] = 99999999 + Math.abs(randomNum.nextInt(100));//adjust for more random ID#'s range
+			randomID[i] = 100000000 + Math.abs(randomNum.nextInt(100));//adjust for more random ID#'s range
 			d1.addStudent("Joe"+i,randomID[i]);
 		}
 		System.out.print(d1.prettyStr());
@@ -85,13 +86,17 @@ public class TestClassForSortedDirectory {
 		// Removing, adding, and lookingup students in the directory
 		System.out.println("*Test Case8: Removing {Mark,100000009}, adding {Jane,123123123}, & lookingup {Mary,100000007}");
 		d1.removeStudent(100000009);
-		System.out.println("*1) {Mark,100000009}removed.");
+		System.out.println("*1) {Mark,100000009}removed:");
 		System.out.println(d1.prettyStr());
-		System.out.println("*2) {Jane,123123123}added.");
+		System.out.println("*2) {Jane,123123123}added:");
 		d1.addStudent("Jane", 123123123);
 		System.out.println(d1.prettyStr());
-		System.out.println("*3) Lookingup {Mary,100000007}.");
+		System.out.println("*3) Lookingup {Mary,100000007}:");
 		System.out.println(d1.studentLookup(100000007));
+
+		System.out.println("=============================================");
+		System.out.println("    End of Testing SortedDirectory Class     ");
+		System.out.println("=============================================");
 
 
 

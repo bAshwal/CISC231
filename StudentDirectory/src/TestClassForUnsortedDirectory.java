@@ -46,14 +46,16 @@ public class TestClassForUnsortedDirectory {
 		d1.addStudent("Mark", 100000009);
 		d1.addStudent("Jack", 100000008);
 		d1.addStudent("Mary", 100000007);
-		System.out.print("*Added 5 students(Sorted):\n" + d1.prettyStr());
+		d1.addStudent("Gary", 100000006);
+
+		System.out.print("*Added 5 students:\n" + d1.prettyStr());
 		System.out.println("______________________________");
 
 		//Removing 2 of the students with their ID#'s
 		System.out.println("*Test Case5: remove StudentID#'s {100000010,100000007} i.e. Bakr and Mary");
 		d1.removeStudent(100000010);
 		d1.removeStudent(100000007);
-		System.out.print("*removed the 2 studentID#'s (Sorted):\n" + d1.prettyStr());
+		System.out.print("*removed the 2 studentID#'s:\n" + d1.prettyStr());
 		System.out.println("______________________________");
 
 		// Adding 2 students with ID#'s that already exist
@@ -69,13 +71,13 @@ public class TestClassForUnsortedDirectory {
 		System.out.print( d1.prettyStr());
 		System.out.println("______________________________");
 
-		// Adding 10 students to test dynamicity and sorting of the list
-		System.out.println("*Test Case7: adding 10 random studentID#'s to test dynamicity & sorting");
+		// Adding 10 students
+		System.out.println("*Test Case7: adding 10 random studentID#'s");
 		System.out.println("** This could be adjusted to more students from the source code. Tested up to 1000** ");
 		Random randomNum = new Random();
 		int randomID[] = new int [10]; //adjust for more students
 		for (int i = 0; i<randomID.length; i++){
-			randomID[i] = 99999999 + Math.abs(randomNum.nextInt(100));//adjust for more random ID#'s range
+			randomID[i] = 100000000 + Math.abs(randomNum.nextInt(100));//adjust for more random ID#'s range
 			d1.addStudent("Joe"+i,randomID[i]);
 		}
 		System.out.print(d1.prettyStr());
@@ -91,6 +93,10 @@ public class TestClassForUnsortedDirectory {
 		System.out.println(d1.prettyStr());
 		System.out.println("*3) Lookingup {Mary,100000007}.");
 		System.out.println(d1.studentLookup(100000007));
+
+		System.out.println("===============================================");
+		System.out.println("    End Of Testing UnsortedDirectory Class     ");
+		System.out.println("===============================================");
 
 
 
